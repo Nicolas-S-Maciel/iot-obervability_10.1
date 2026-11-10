@@ -1,0 +1,37 @@
+# ============================================================
+#  Regras de Alerta - TechInova
+#  Dispara alertas quando os sensores saem da faixa segura
+# ============================================================
+
+groups:
+  - name: alertas-chao-de-fabrica
+    rules:
+      # Temperatura critica de equipamento
+      - alert: SuperaquecimentoEquipamento
+        expr: techinova_temperatura_celsius > 90
+        for: 15s
+        labels:
+          severidade: critico
+        annotations:
+          resumo: "Superaquecimento na {{ $labels.linha }}"
+          descricao: "Temperatura de {{ $value }}C na {{ $labels.linha }} (limite: 90C)."
+
+      # Vibracao excessiva no motor (indicio de falha mecanica)
+      - alert: VibracaoExcessiva
+        expr: techinova_vibracao_mm_s > 7
+        for: 15s
+        labels:
+          severidade: alerta
+        annotations:
+          resumo: "Vibracao alta na {{ $labels.linha }}"
+          descricao: "Vibracao de {{ $value }} mm/s - manutencao preditiva recomendada."
+
+      # Maquina parada por muito tempo
+      - alert: MaquinaParada
+        expr: techinova_maquina_operando == 0
+        for: 30s
+        labels:
+          severidade: alerta
+        annotations:
+          resumo: "{{ $labels.linha }} parada"
+          descricao: "A {{ $labels.linha }} esta parada ha mais de 30 segundos."
