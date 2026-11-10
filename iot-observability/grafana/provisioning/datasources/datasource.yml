@@ -1,0 +1,15 @@
+# ============================================================
+#  Provisionamento automatico do Data Source no Grafana
+#  Conecta o Grafana ao Prometheus sem configuracao manual
+# ============================================================
+
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    uid: prometheus
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true

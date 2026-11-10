@@ -1,0 +1,15 @@
+# ============================================================
+#  Provisionamento automatico de Dashboards no Grafana
+# ============================================================
+
+apiVersion: 1
+
+providers:
+  - name: "TechInova Dashboards"
+    orgId: 1
+    folder: "Industria 4.0"
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards

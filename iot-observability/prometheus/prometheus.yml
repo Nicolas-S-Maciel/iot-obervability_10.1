@@ -1,0 +1,27 @@
+# ============================================================
+#  Configuracao do Prometheus - TechInova
+#  Define DE ONDE e COM QUE FREQUENCIA coletar metricas
+# ============================================================
+
+global:
+  scrape_interval: 5s        # coleta a cada 5 segundos
+  evaluation_interval: 5s    # avalia regras de alerta a cada 5s
+
+# Carrega as regras de alerta
+rule_files:
+  - "alertas.yml"
+
+scrape_configs:
+  # Job 1: o proprio Prometheus (auto-monitoramento)
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Job 2: microsservico IoT da fabrica (alvo principal)
+  - job_name: "techinova-iot"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["iot-monitor:8000"]
+        labels:
+          projeto: "industria-4.0"
+          ambiente: "laboratorio"
